@@ -2,17 +2,50 @@
 <html>
 <head>
     <title>{{ post.title }}</title>
+    {% load static %}
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/style.css' %}">
 </head>
 <body>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p>Author: {{ post.author }}</p>
-    <p>Created: {{ post.created_at }}</p>
-    <p>Updated: {{ post.updated_at }}</p>
-    {% if user == post.author %}
-        <a href="{% url 'post_edit' pk=post.pk %}">Edit</a>
-        <a href="{% url 'post_delete' pk=post.pk %}">Delete</a>
-    {% endif %}
-    <a href="{% url 'post_list' %}">Back to Posts</a>
+    <header class="bg-dark text-white py-3 mb-4">
+        <div class="container">
+            <h1 class="h3">My Blog</h1>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link text-white" href="{% url 'post_list' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'post_new' %}">New Post</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'signup' %}">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="mb-4">{{ post.title }}</h1>
+        <p>{{ post.content }}</p>
+        <p class="text-muted">Author: {{ post.author }}</p>
+        <p class="text-muted">Created: {{ post.created_at }}</p>
+        <p class="text-muted">Updated: {{ post.updated_at }}</p>
+        {% if user == post.author %}
+            <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}">Edit</a>
+            <a class="btn btn-danger" href="{% url 'post_delete' pk=post.pk %}">Delete</a>
+        {% endif %}
+        <a class="btn btn-secondary" href="{% url 'post_list' %}">Back to Posts</a>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-4">
+        <div class="container">
+            <p class="mb-0">My Blog &copy; 2024</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
